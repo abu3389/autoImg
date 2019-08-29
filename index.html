@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+        <title>Images grid</title>
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <script src="http://www.jq22.com/jquery/1.11.1/jquery.min.js"></script>
+
+        <script src="src/images-grid.js"></script>
+        <link rel="stylesheet" href="src/images-grid.css">
+
+        <style>
+            body {
+                font-family: sans-serif;
+            }
+            p {
+                text-align: center;
+                font-weight: bold;
+            }
+        </style>
+
+    </head>
+    <body>
+
+        <p>不同尺寸图片自适应排版，超过5张的展示</p>
+        <div style="text-align: center;">
+            <span>选择容器:</span> 
+            <div style="margin: 10px 0">
+                <label><input type="radio"  name="group" checked="checked" value="gallery1" />展示容器1 </label>
+                <label ><input type="radio" name="group" value="gallery2" />展示容器2</label>
+            </div>
+
+            <button onclick="addPic('gallery1')">增加一张图片</button>
+            <button onclick="resetPic('gallery1')">重置</button>
+        </div>
+        <div style="text-align: center;">
+            <div style="display: inline-block;">
+                <p>展示容器1</p>
+                <div id="gallery1" style="width: 300px;height: 200px;overflow: hidden;"></div>
+            </div>
+            <div style="display: inline-block;">
+                <p>展示容器2</p>
+                <div id="gallery2" style="width: 300px;height: 200px;overflow: hidden;"></div>
+            </div>
+        </div>
+        <script>
+// 配置参数
+
+// images-grid网格图片插件的可用配置参数有：
+
+// images：类型：数组。图片的URL地址。
+
+// aling：类型：布尔值。是否对齐不同尺寸的图片。
+
+// getViewAllText：类型：函数。在图片大于5张时显示的文本。
+// 
+            //图片库
+            var imges=[
+                'imgs/1.jpg',
+                { src: 'imgs/2.jpg', alt: 'Second image', title: 'Second image' },
+                'imgs/3.jpg',
+                { src: 'imgs/4.jpg', caption: 'Beautiful forest' },
+                'imgs/diff-size/2.jpg',//这是不同尺寸的图片，也会自适应
+                'imgs/diff-size/3.jpg',//这是不同尺寸的图片，也会自适应
+                'imgs/5.jpg',
+                'imgs/6.jpg',
+                'imgs/diff-size/1.jpg',//这是不同尺寸的图片，也会自适应
+                'imgs/diff-size/4.jpg',//这是不同尺寸的图片，也会自适应
+                'imgs/diff-size/5.jpg',//这是不同尺寸的图片，也会自适应
+            ]
+
+            var imagesInit={}//存放所有图片容器的变量
+
+            initPic('gallery1');//初始化容器1
+            initPic('gallery2');//初始化容器2
+
+
+            function initPic(id){
+                var checkedName
+                if(!id){//有指定id才初始化指定的容器，没有就根据选择
+                   checkedName=$("input[name='group']:checked").val(); 
+                }else{
+                   checkedName=id;
+                }
+                console.log('checkedName',checkedName)
+                imagesInit[checkedName]=[imges[Math.floor((Math.random()*imges.length))]]//获取一张随机图片路径
+                setPic(checkedName,imagesInit[checkedName])//初始化生成图片
+            }
+         
+
+            /**
+             * [setPic 配置图片容器]
+             * @param  {[string]} id   [显示图片的容器id]
+             * @param  {[array]} imgs [图片路径数组]
+             * @param  {[array]} align [是否自动对齐不同尺寸的图片]
+             * @return {[type]}      [description]
+             */
+            function setPic(id,imgs,align=true){
+                $('#'+id).imagesGrid({
+                    images: imgs,
+                    align: align,
+                    getViewAllText: function(imagesCount) {//图片大于5张显示的文字
+                        return '查看所有 ' + imagesCount + ' 张图片';
+                    },
+                });
+            }
+
+
+            /**
+             * [addPic 增加一张图片]
+             * @param {[type]} id [要增加的图片容器id]
+             */
+            function addPic(){
+                //获取一张随机图片
+                var img=imges[Math.floor((Math.random()*imges.length))]
+                var checkedName=$("input[name='group']:checked").val(); 
+                //放入原有图片数组
+                imagesInit[checkedName].push(img);
+                //配置容器
+                setPic(checkedName,imagesInit[checkedName])
+            }
+
+
+            /**
+             * [resetPic 重置容器图片显示]
+             * @param {[type]} id [要重置的图片容器id]
+             */
+            function resetPic(){
+                var checkedName=$("input[name='group']:checked").val(); //获取容器名称
+                initPic(checkedName);//初始化容器
+            }
+        </script>
+
+    </body>
+</html>
