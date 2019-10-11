@@ -1,0 +1,227 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Shuffle Adding and Removing Elements Demo</title>
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta property="og:title" content="Shuffle Adding and Removing Elements Demo" />
+  <meta property="og:description" content="This demo of shuffle shows how to add and removing items." />
+
+  <link id="favicon" rel="icon" type="image/png" href="favicon.png" >
+
+
+  <link rel="stylesheet" href="css/prism.css" />
+  <link rel="stylesheet" href="css/normalize.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/shuffle-styles.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700">
+  
+  
+  <script>window.site_url = "/Shuffle";</script>
+</head>
+<body class="">
+
+
+<main role="main" id="main">
+  <style>
+
+  /* Styles for shuffle */
+  .container {
+    counter-reset: boxes;
+  }
+
+  .box {
+    position: relative;
+    width: 18%;
+    margin-left: 2.5%;
+    height: 100px;
+    margin-top: 20px;
+    float: left;
+    background: #E74C3C;
+    counter-increment: boxes;
+  }
+
+  .box::before {
+    content: 'DOM: ' counter(boxes);
+    position: absolute;
+    color: white;
+    top: .5em;
+    left: .5em;
+  }
+
+
+  .box::after {
+    content: 'Reviews: ' attr(data-reviews);
+    position: absolute;
+    color: white;
+    bottom: .5em;
+    left: .5em;
+  }
+
+  @media (min-width: 1024px) {
+    .box::before {
+      content: 'DOM order: ' counter(boxes);
+    }
+
+    .box::after {
+      content: 'Total Reviews: ' attr(data-reviews);
+    }
+  }
+
+  .box.shuffle-item,
+  .box:first-child {
+    margin-left: 0;
+  }
+
+  .w2 {
+    width: 38.5%;
+  }
+
+  .w3 {
+    width: 59%;
+  }
+
+  .h2 {
+    height: 220px;
+  }
+</style>
+
+<section class="container">
+  <div class="row">
+    <div class="col-12@sm">
+      <h2>添加和删除项目</h2>
+      <p>将元素添加到Shuffle容器时，请使用add方法通知Shuffle实例。 您必须自己将元素添加到DOM。 这使您可以控制默认（DOM）排序顺序</p>
+      <p>当你想删除项目，使用删除。 这会淡出项目，然后将其从DOM中删除。</p>
+    </div>
+  </div>
+</section>
+
+<section class="container">
+  <div class="row">
+    <div class="col-12@sm">
+
+      <fieldset class="filters-group">
+        <legend class="filter-label">分类</legend>
+        <div class="btn-group" id="sorter">
+          <label class="btn active">
+            <input type="radio" name="sort-value" value="dom" checked /> DOM Order
+          </label>
+          <label class="btn">
+            <input type="radio" name="sort-value" value="most-reviews" /> 最多评论
+          </label>
+          <label class="btn">
+            <input type="radio" name="sort-value" value="least-reviews" /> 最少评论
+          </label>
+        </div>
+      </fieldset>
+
+      <br>
+      <fieldset class="filters-group">
+        <legend class="filter-label">过滤</legend>
+        <div class="btn-group" id="filterer">
+          <label class="btn active">
+            <input type="radio" name="filter-value" value="none" checked /> None
+          </label>
+          <label class="btn">
+            <input type="radio" name="filter-value" value="odd-reviews" /> Odd number of reviews
+          </label>
+          <label class="btn">
+            <input type="radio" name="filter-value" value="even-reviews" /> Even number of reviews
+          </label>
+        </div>
+      </fieldset>
+
+      <div>
+        <br>
+        <p class="filter-label">操作</p>
+        <div class="btn-group">
+          <button class="btn" id="prepend">Prepend 5 Boxes</button>
+          <button class="btn" id="append">Append 5 Boxes</button>
+          <button class="btn" id="remove">Remove Some Boxes</button>
+          <button class="btn" id="randomize">Randomize</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="container">
+  <div class="row">
+    <div class="col-12@sm">
+      <div id="my-shuffle" class="items">
+        <div class="box" data-reviews="45"></div>
+        <div class="box h2 w2" data-reviews="19"></div>
+        <div class="box" data-reviews="66"></div>
+        <div class="box" data-reviews="148"></div>
+        <div class="box w2" data-reviews="99"></div>
+        <div class="box" data-reviews="3"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="row">
+    <div class="col-12@sm">
+      <h3>添加元素</h3>
+      <p>无论您在DOM中添加元素的哪个位置，它都会显示在网格中（假设您使用默认的排序方式）。 考虑到这一点，您可以追加，前置或插入元素，以便让它们以正确的顺序显示。</p>
+      <div class="code-block">
+        <pre rel="JavaScript"><code class="language-javascript">Demo.prototype.setupEvents = function () {
+  document.querySelector('#append').addEventListener('click', this.onAppendBoxes.bind(this));
+};
+
+/**
+ * Create some DOM elements, append them to the shuffle container, then notify
+ * shuffle about the new items. You could also insert the HTML as a string.
+ */
+Demo.prototype.onAppendBoxes = function () {
+  var elements = this._getArrayOfElementsToAdd();
+
+  elements.forEach(function (element) {
+    this.element.appendChild(element);
+  }, this);
+
+  // Tell shuffle elements have been appended.
+  // It expects an array of elements as the parameter.
+  this.shuffle.add(elements);
+};</code></pre>
+      </div>
+
+    </div>
+    <div class="col-12@sm">
+      <h3>删除元素</h3>
+      <p>随机播放会将元素动画化，然后在DOM完成后将其从DOM中移除。 然后它将使用data.collection中的元素数组发出Shuffle.EventType.REMOVED事件。</p>
+      <div class="code-block">
+        <pre rel="JavaScript"><code class="language-javascript">this.shuffle.remove([element1, element2]);</code></pre>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</main>
+
+
+
+<script src="https://unpkg.com/core-js/client/shim.min.js"></script>
+<!-- Syntax highlighting via Prism -->
+<script src="js/prism.js"></script>
+<!-- Shuffle! -->
+<script src="js/shuffle.js"></script>
+
+<script src="js/site-nav.js"></script>
+
+
+
+
+
+<script src="js/adding-removing.js"></script>
+
+
+
+</body>
+</html>
+

@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="style.css">
+<script src="shuffle.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<!-- xs代表特小号 代表手机端 栅格化分为了6份  --> 
+<!-- sm代表中等 代表iPad 栅格化分为了12份 --> 
+<!-- md代表特大 代表电脑 栅格化分为了12份 -->
+
+<div class="container">
+  <div class="js-grid my-shuffle">
+    <figure class="col-6@xs col-12@sm col-3@md picture-item">
+      <div class="aspect aspect--16x9">
+        <div class="aspect__inner"><img src="https://picsum.photos/409?image=500" /></div>
+      </div>
+    </figure>
+    <figure class="col-6@xs col-12@sm col-3@md picture-item">
+      <div class="aspect aspect--16x9">
+        <div class="aspect__inner"><img src="https://picsum.photos/409?image=501" /></div>
+      </div>
+    </figure>
+    <figure class="col-6@xs col-12@sm col-3@md picture-item">
+      <div class="aspect aspect--16x9">
+        <div class="aspect__inner"><img src="https://picsum.photos/409?image=502" /></div>
+      </div>
+    </figure>
+    <figure class="col-6@xs col-12@sm col-3@md picture-item">
+      <div class="aspect aspect--9x80">
+        <div class="aspect__inner"><img src="https://picsum.photos/409?image=510" /></div>
+      </div>
+    </figure>
+    <figure class="col-6@xs col-12@sm col-3@md picture-item">
+      <div class="aspect aspect--16x9">
+        <div class="aspect__inner"><img src="https://picsum.photos/409?image=503" /></div>
+      </div>
+    </figure>
+    <figure class="col-6@xs col-12@sm col-3@md picture-item">
+      <div class="aspect aspect--16x9">
+        <div class="aspect__inner"><img src="https://picsum.photos/409?image=504" /></div>
+      </div>
+    </figure>
+    <figure class="col-6@xs col-12@sm col-3@md picture-item">
+      <div class="aspect aspect--16x9">
+        <div class="aspect__inner"><img src="https://picsum.photos/409?image=505" /></div>
+      </div>
+    </figure>
+    <figure class="col-6@xs col-12@sm col-3@md picture-item">
+      <div class="aspect aspect--16x9">
+        <div class="aspect__inner"><img src="https://picsum.photos/409?image=506" /></div>
+      </div>
+    </figure>
+  </div>
+</div>
+<style>
+.picture-item{margin-bottom:10px;}
+</style>
+<script>
+//document.querySelector('.my-shuffle')代表了my-shuffle元素中元素需要洗牌
+//itemSelector代表元素需要洗牌
+var Shuffle = window.Shuffle;
+var myShuffle = new Shuffle(document.querySelector('.my-shuffle'), {
+  itemSelector: '.picture-item',
+  buffer: 1,
+});
+</script>
+</body>
+</html>
